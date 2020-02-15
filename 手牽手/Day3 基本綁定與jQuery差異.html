@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+  </head>
+  <body>
+    <div id="app">
+      <section>
+        <div class="container">
+          <div class="title">
+            <!-- <img v-bind:src="src" alt="" class="logo" /> -->
+            <!-- v-bind 告訴src是我要綁的，而不是普通src -->
+            <img :src="src" alt="" class="logo" />
+            :是v-bind的縮寫
+
+            <!-- <h1>Vue.js 手牽手，一起嗑光全家桶</h1> -->
+            <!-- <h1 v-text="title"></h1> -->
+            <!-- <h1 v-html="title"></h1> -->
+            <!-- 這邊就不用再過一層data，因為data已經綁在vue身上，所以只要呼叫title就可以 -->
+            <h1>簡化寫法，用雙刮號：{{ title }}</h1>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script>
+      let data = {
+        //let與const是區塊作用域
+        src: './images/vue-iron.png',
+        title: 'Vue.js 手牽手，一起嗑光全家桶'
+      }
+      let vm = new Vue({
+        el: '#app', //element的縮寫，故名思義是要綁哪個元素
+        data: data //要綁哪包資料，綁上面的data
+      })
+
+      //jQuery寫法
+      // $('.title > h1').text(data.title)
+      // $('.logo').attr('src', data.src)
+    </script>
+  </body>
+</html>
