@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cn.vuejs.org/js/vue.js"></script>
+    <style>
+        .test{
+            height: 100px;
+            width: 100px;
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="view">
+        {{message}}
+        <div class="test" @click="run"></div><br>
+        <div class="test" @click="speak"></div><br>
+        <div class="test" @click="add">
+            {{strFn}}
+        </div>
+        <!-- 根據點即次數i 顯示不同的內容 
+            1~5次：用點力
+            6~10次：沒吃飯嗎
+            11~15：沒感覺
+            16以上：麻木了
+        -->
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el:".view", //掛載點
+        data:{      //數據選項
+            message: 'hello',
+            i: 0,
+        } ,
+        methods:{   //方法選項
+            run: function(){
+                alert('我會vue');
+            },
+            speak: function(){
+                alert('我不會augular');
+            },
+            add: function(){
+                //訪問數據選項中的內容
+                this.i++;
+                console.log(this.i);
+            },
+        },
+        computed:{ //計算屬性，根據不同情況，顯示不同內容
+            strFn: function(){
+                if(this.i<=5){
+                    return '用點力';
+                }else if(this.i<=10){
+                    return '沒吃飯嗎';
+                }else if(this.i<=15){
+                    return '沒感覺';
+                }else{
+                    return '麻木了';
+                }
+            },
+        },
+        watch: {    //監聽值的變化，另如用來監聽滾動事件操作值的變化
+            i: function(newValue,oldValue){
+                console.log(newValue,oldValue)
+            }
+        }
+    });
+</script>
+</html>

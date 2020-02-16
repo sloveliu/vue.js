@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script src="https://cn.vuejs.org/js/vue.js"></script>
+    <style>
+      .show{
+        height: 100px;
+        width: 100px;
+        background: red;
+      }
+      .view{
+        height: 30px;
+        width: 300px;
+        border: 1px solid gray;
+        margin:20px auto; 
+        line-height: 30px;
+        text-align: center;
+      }
+      .active{
+        background-color: red;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 數據渲染 v-text 簡寫 {{}}、v-html -->
+      <p v-text="message"></p>
+      <!-- 以HTML -->
+      <p v-html="message"></p>
+      <p v-text="title"></p>
+      <p v-html="title"></p>
+      
+      <!-- 模塊隱藏 v-if, v-show -->
+      <!-- v-if不渲染 -->
+      <p class="show" v-if="isShow"></p>
+      <!-- v-show渲染過後，再隱藏 -->
+      <p class="show" v-show="isShow"></p>
+      
+      <!-- 循環渲染列表 v-for -->
+      <ul>
+        <!-- 類似於for-in -->
+        <li v-for="item in arr">
+          {{item}}
+        </li>
+      </ul>
+      <!-- 事件綁定 v-on 簡寫@ -->
+      <p class="show" v-on:click="speak"></p>
+      <!-- 簡寫 @ -->
+      <p class="show" @click="speak"></p>
+      <!-- 屬性綁定 v-bind 簡寫 : -->
+      <img src="Messenger_icon.png">
+      <img v-bind:src="imgName">
+      <img :src="imgName">
+      <!-- 樣式綁定 v-bind  -->
+      <!-- isActive 為真，即給該div添加一個class 名稱，不為真則不添加 -->
+      <div class="view" v-bind:class="{active:isActive}">
+        {{message}}
+      </div>
+      <!-- 雙向綁定 v-model -->
+      <input v-model="message" type="text">
+      
+    </div>
+  </body>
+<script>
+  var app = new Vue({
+    el: "#app", //對象掛載點在哪個元素上
+    data: {
+      //vue對象裡所需要的data
+      message: 'vue 入門之模板學習',
+      title:'<h2>指令學習</h2>',
+      isShow: false,
+      arr: ['1、html','2、CSS','3、Javascript'],
+      imgName: 'line_icon.png',  //圖片名稱
+      isActive: true,
+    },
+    methods:{ //方法
+      speak:function(){ //也可以用ES6的寫法
+        alert('hello');
+      }
+    }
+  });
+</script>
+  </html>
