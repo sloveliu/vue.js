@@ -1,6 +1,9 @@
 <template>
   <div id="app">
     <div id="nav">
+      I`m App.vue
+      <div>
+        <hr>
     <!-- <img alt="Vue logo" src="./assets/logo.png">
     <HelloWorld msg="Welcome to Your Vue.js App"/> -->
 
@@ -11,6 +14,7 @@
     <!-- vue 提供的class 
     router-link-exact-active 現在這頁
     router-link-active 路由過程 / 是home 一定會經過 about是路由，所以不太會用exact -->
+    </div>
   </div>
   <!-- router-view component會顯示在這 -->
   <router-view/>
