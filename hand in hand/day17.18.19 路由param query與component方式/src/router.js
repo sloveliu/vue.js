@@ -44,5 +44,15 @@ export default new Router({
                 },
             ]
         },
+        {   //網址/iron?day=10 query是10
+            path:'/iron',
+            redirect: '/iron/1'
+            //沒傳參數就傳到1
+            // component: () => import('./views/iron/index.vue') 這行簡化掉
+        },
+        {   //取一個day的名字 傳params，簡化為網址/iron/10
+            path:'/iron/:day',
+            component: () => import('./views/iron/index.vue')
+        }
     ]
 })

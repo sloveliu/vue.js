@@ -148,8 +148,9 @@ let data = {
     }
   ],
   input: {
-    type: '全部',
-    title: ''
+    //預設改為null
+    type: null,
+    title: null
   }
 }
 
@@ -157,26 +158,47 @@ new Vue({
   el: '#app',
   data: data,
   computed: {
-    //篩選
-    typeMenu() {
-      if (this.input.type === '全部') {
-        return this.menu
-      } else {
-        return this.menu.filter(item => {
-          return item.type === this.input.type
-        })
+    typeList(){
+      let obj = {
+        sort: [],
+        map: {}
+      }
+      this.menu.forEach(({type,title,link},index)=>{
+        //如果這個類型還沒有篩選過
+        if(!obj.map[type]) {
+          //先push這個類型
+          obj.sort.push(type)
+          //第一次如果沒做過這個類型就先初始化
+          obj.map[type] = {
+            sort: [],
+            map: {}
+          }
+        }
+        //把標題push進去
+        obj.map[type].sort.push(title)
+        //把index跟link坐起來
+        obj.map[type].map[title] = {index, link}
+      })
+      //完成後return obj
+      return obj
+    },
+    titleList(){
+      //先清掉變成請選擇，否則會是前一個選好的type篩選結果
+      this.input.title = null
+      //選了一個type我就產出相對應的
+      if(this.input.type){
+        //到分類的對應裡拿this.input.type 這一個類別
+        return this.typeList.map[this.input.type]
+      }else{ //沒有的話我就回傳一個空陣列
+        return []
       }
     },
-    titleMenu() {
-      if (this.input.title) {
-        return this.typeMenu.filter(item => {
-          let content = item.title.toLowerCase()
-          let keyword = this.input.title.toLowerCase()
-          //找不到就是-1，找到就不是-1
-          return content.indexOf(keyword) !== -1
-        })
-      } else {
-        return this.typeMenu
+    content(){
+      //如果你的title已經選了
+      if(this.input.title){
+        return this.titleList.map[this.input.title]
+      }else{
+        return null
       }
     }
   }

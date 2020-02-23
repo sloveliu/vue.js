@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <section v-if="loading">
+        Loading...
+      </section>
+      <section v-else>
+        <div class="container">
+          <div class="title">
+            <div class="input" style="font-size:0px;">
+              <input type="text" placeholder="會員名稱" v-model="input.name" />
+              <input type="text" placeholder="電子信箱" v-model="input.email" />
+              <button @click="submitHandler">送出</button
+              ><button @click="cancelHandler">取消</button>
+            </div>
+            <div class="menu">
+              <div class="menuItem" v-for="(item,index) in contacts">
+                <span class="number">{{item.id}}</span>
+                <span class="type">{{item.name}}</span>
+                <a :href="'mailto:'+item.email" target="vue-iron" class="title"
+                  >{{item.email}}</a
+                >
+                <span class="edit" @click="editHandler(index)">修改</span>
+                <!-- 要告訴是哪個item 或index-->
+                <span clas="delete" @click="deleteHandler(index)">刪除</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.2/axios.js"></script>
+    <script>
+      //簡單的vue函式封裝
+      ;(function(Vue) {
+        new Vue({
+          el: '#app',
+          data: {
+            loading: false,
+            contacts: [],
+            //做修改時卻變成送出新增，加入下面的editIndex
+            editIndex: null,
+            input: {
+              name: '',
+              email: ''
+            }
+          },
+          methods: {
+            submitHandler() {
+              //先解構，把input解出來，等一下就不用一直this.input
+              let { name, email } = this.input
+              // 如果其中一項沒有，就return 不做事
+              if (!name || !email) return
+              this.loading = true
+              // 如果editIndex是空的，表示是新增
+              if (this.editIndex === null) {
+                // 有的話 ,this.input 傳物件出去
+                axios
+                  .post('http://localhost:8888/contact', this.input)
+                  .then((res) => {
+                    this.contacts.push(res.data)
+                    //資料送出去，完成塞回來要清除資料
+                    this.cancelHandler()
+                    this.loading = false
+                  })
+                  .catch((err) => {
+                    console.log(err)
+                  })
+                //否則是修改
+              } else {
+                //this.contacts[this.editIndex].id 選中的那個人的id
+                let { id } = this.contacts[this.editIndex]
+                axios
+                  .put('http://localhost:8888/contact/' + id, this.input)
+                  .then((res) => {
+                    this.contacts[this.editIndex] = res.data
+                    this.cancelHandler()
+                    this.loading = false
+                  })
+                  .catch((err) => {
+                    console.log(err)
+                  })
+              }
+            },
+            cancelHandler() {
+              this.editIndex = null
+              this.input.name = ''
+              this.input.email = ''
+
+              // this.input {
+              //   name: '',
+              //   email: ''
+              // }
+            },
+            deleteHandler(index) {
+              let target = this.contacts[index]
+              if (confirm(`是否刪除 ${target.name} ?`)) {
+                this.loading = true
+                axios
+                  .delete('http://localhost:8888/contact/' + target.id)
+                  .then(() => {
+                    //用splice來刪掉這個index 1個
+                    this.contacts.splice(index, 1)
+                    //解決按修改時，但又把該物件刪掉，卻停留在input
+                    this.cancelHandler()
+                    this.loading = false
+                  })
+                  .catch((err) => {
+                    console.log(err)
+                  })
+              }
+              //這樣開發有點困擾，所以之後會用模組化來開發
+            },
+            editHandler(index) {
+              let { name, email } = this.contacts[index]
+              this.editIndex = index
+              // this.input.name = name
+              // this.input.email = email
+              //下面重構的寫法，比較小
+              this.input = {
+                name,
+                email
+              }
+            }
+          },
+          mounted() {
+            this.loading = true
+            //先指定api路徑
+            axios
+              .get('http://localhost:8888/contact')
+              //讀取沒有問題就會得到資料，然後進行什麼。'res'ponse
+              .then((res) => {
+                this.contacts = res.data
+                this.loading = false
+                //一般假設有錯誤都會做錯誤處理
+              })
+              .catch((err) => {
+                console.log(err)
+              })
+          }
+        })
+      })(Vue)
+    </script>
+  </body>
+</html>

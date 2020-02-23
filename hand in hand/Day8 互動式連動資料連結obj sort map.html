@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./css/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <section>
+        <div class="container">
+          <div class="title">
+            <div class="input" style="font-size: 0px">
+              <select v-model="input.type">
+                <!-- :value後面的null當程式看 -->
+                <option :value="null">請選擇</option>
+                <!-- sort是把一個個類別push進去 -->
+                <option v-for="item in typeList.sort">{{item}}</option>
+              </select>
+              <select style="width: 720px" v-model="input.title">
+                <option :value="null">請選擇</option>
+                <option v-for="item in titleList.sort">{{item}}</option>
+              </select>
+            </div>
+            <div class="description">
+              <!-- 有content我才render，沒有就不render -->
+              <div v-if="content" class="menuItem" style="color:red">
+                <span class="number">{{ content.index + 1}}</span>
+                <a :href="content.link" class="title" style="color:red" target="vue-iron"
+                  >{{content.link}}</a
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.6.10/vue.js"></script>
+    <script src="./js/day8.js"></script>
+  </body>
+</html>

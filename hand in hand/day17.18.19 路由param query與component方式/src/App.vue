@@ -7,7 +7,8 @@
     <!-- router-link用來切router -->
     <router-link to="/">Home</router-link> |
     <router-link to="/about">About</router-link> |
-    <router-link to="/william">William</router-link>
+    <router-link to="/william">William</router-link> |
+    <router-link to="/iron">Iron</router-link>
     <!-- vue 提供的class 
     router-link-exact-active 現在這頁
     router-link-active 路由過程 / 是home 一定會經過 about是路由，所以不太會用exact -->
