@@ -12,13 +12,13 @@ export default {
     };
   },
   //父組件給子組件傳遞數據 props
-  //添加props
+  //添加props，接收父組件傳來的值
   props: {
-    msg: {
-      //自定義屬性 data當中的選項
-      type: String,
-      default: '我是誰？'
-    }
+      msg: {
+        //自定義屬性 data當中的選項
+        type: String,
+        default: '我是誰？'
+     }
   }
 };
 </script>
